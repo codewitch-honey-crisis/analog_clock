@@ -54,7 +54,9 @@ void main_wifi_on_paint(surface_t& destination, const srect16& clip, void* state
     if(time_now>0) {
         wifi_enabled = ntp_syncing();
     }
-    draw::icon(destination,spoint16::zero(),wifi_icon,wifi_enabled?color<typename surface_t::pixel_type>::white:color<typename surface_t::pixel_type>::gray);
+    if(wifi_enabled) {
+        draw::icon(destination,spoint16::zero(),wifi_icon, color_t::white);
+    }
 }
 
 void time_update() {
