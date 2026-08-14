@@ -74,7 +74,7 @@ void time_update() {
                 *time_buffer = ' ';
             }
         } else {
-            strftime(time_buffer, sizeof(time_buffer), "%H:%M am", &tim);
+            strftime(time_buffer, sizeof(time_buffer), "%H:%M", &tim);
         }
     } else {
         if (!time_military) {
@@ -87,7 +87,7 @@ void time_update() {
                 *time_buffer = ' ';
             }
         } else {
-            strftime(time_buffer, sizeof(time_buffer), "%H %M am", &tim);
+            strftime(time_buffer, sizeof(time_buffer), "%H %M", &tim);
         }
     }
     main_text.text(time_buffer);
