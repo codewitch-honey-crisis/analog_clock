@@ -16,9 +16,9 @@
 
 // How many framebuffers the driver allocated. 1 == the FB is live/scanned out.
 #if !defined(LCD_FRAMEBUFFER_COUNT)
-#define ESPMON_FB_COUNT 1
+#define FB_COUNT 1
 #else
-#define ESPMON_FB_COUNT LCD_FRAMEBUFFER_COUNT
+#define FB_COUNT LCD_FRAMEBUFFER_COUNT
 #endif
 
 // Push dirty cache lines for rows [y1..y2] out to PSRAM so the LCD DMA sees
@@ -44,7 +44,7 @@ uix::display lcd;
 static void uix_flush(const gfx::rect16& bounds, const void* bmp, void* state) {
 #if LCD_BUS == PANEL_BUS_MIPI || LCD_BUS == PANEL_BUS_RGB
 
-#if ESPMON_FB_COUNT == 1
+#if FB_COUNT == 1
     // Single framebuffer: it IS the scanout buffer. Once the writeback lands,
     // the pixels are on screen. Nothing to recycle, nothing to wait for, so
     // completion is synchronous.
@@ -96,7 +96,9 @@ void display_init(void) {
     lcd.update_mode(uix::screen_update_mode::direct);
     lcd.buffer_size((LCD_WIDTH*LCD_HEIGHT*LCD_BIT_DEPTH+7)/8);
     lcd.buffer1((uint8_t*)panel_lcd_framebuffer(0));
+#if FB_COUNT > 1
     lcd.buffer2((uint8_t*)panel_lcd_framebuffer(1));
+#endif
 #endif
     
     lcd.on_flush_callback(uix_flush);
